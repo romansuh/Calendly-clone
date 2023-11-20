@@ -14,7 +14,7 @@ export const submitSignInFormData = (values, callDispatch, callNavigate) => {
             if (storedUserData.password === values.password) {
                 alert('Sign in successful!');
                 callDispatch(storedUser);
-                callNavigate(NAVIGATION_PATHS.WELCOME);
+                callNavigate(NAVIGATION_PATHS.CREATE_EVENT_PAGE);
             } else {
                 alert('Incorrect password. Please try again.');
             }

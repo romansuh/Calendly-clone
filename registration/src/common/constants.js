@@ -1,5 +1,5 @@
 export const NAVIGATION_PATHS = {
-    WELCOME: '/welcome',
+    CREATE_EVENT_PAGE: '/create-event',
     SIGN_IN: '/sign-in',
     SIGN_UP: '/sign-up',
 }

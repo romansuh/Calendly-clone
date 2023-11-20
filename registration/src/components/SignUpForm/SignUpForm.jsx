@@ -58,7 +58,7 @@ const SignUpForm = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.username && Boolean(formik.errors.username)}
-                    helperText={formik.touched.email && formik.errors.username}
+                    helperText={formik.touched.username && formik.errors.username}
                     margin="normal"
                 />
                 <TextField
