@@ -23,8 +23,8 @@ const SignInForm = () => {
                 (storedUser) => {
                 dispatch(signInUser(storedUser));
                 },
-                (path) => {
-                    navigate(path);
+                (path, params) => {
+                    navigate(path, params);
                 });
         },
     });

@@ -18,6 +18,11 @@ export const submitSignInFormData = (values, callDispatch, callNavigate) => {
             }
         }
     } else {
-        if (window.confirm('User not found. Do you want to sign up?')) callNavigate('/signup');
+        if (window.confirm('User not found. Do you want to sign up?'))
+            callNavigate('/signup', {
+                state: {
+                    newUserEmail: values.email,
+                }
+            });
     }
 }

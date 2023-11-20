@@ -1,7 +1,7 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {Button, TextField, Typography, Container} from '@mui/material';
 import {signUpUser} from '../../store/reducers/users/userSlice';
 import {submitSignUpFormData} from './submitSignUpFormData';
@@ -10,11 +10,13 @@ import {signUpValidationSchema} from "./validatorSignUpForm";
 const SignUpForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const initialEmail = location.state.newUserEmail;
 
     const formik = useFormik({
         initialValues: {
             username: '',
-            email: '',
+            email: initialEmail,
             password: '',
             confirmPassword: '',
         },
