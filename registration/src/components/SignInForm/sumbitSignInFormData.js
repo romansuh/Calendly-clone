@@ -1,3 +1,5 @@
+import {NAVIGATION_PATHS} from "../../common/constants";
+
 export const submitSignInFormData = (values, callDispatch, callNavigate) => {
     const user = {
         email: values.email,
@@ -12,14 +14,14 @@ export const submitSignInFormData = (values, callDispatch, callNavigate) => {
             if (storedUserData.password === values.password) {
                 alert('Sign in successful!');
                 callDispatch(storedUser);
-                callNavigate('/welcome');
+                callNavigate(NAVIGATION_PATHS.WELCOME);
             } else {
                 alert('Incorrect password. Please try again.');
             }
         }
     } else {
         if (window.confirm('User not found. Do you want to sign up?'))
-            callNavigate('/signup', {
+            callNavigate(NAVIGATION_PATHS.SIGN_UP, {
                 state: {
                     newUserEmail: values.email,
                 }

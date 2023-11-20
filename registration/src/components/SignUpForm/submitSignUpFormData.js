@@ -1,3 +1,5 @@
+import {NAVIGATION_PATHS} from "../../common/constants";
+
 export const submitSignUpFormData = (values, callDispatch, callNavigate) => {
     const user = {
         email: values.email,
@@ -7,5 +9,5 @@ export const submitSignUpFormData = (values, callDispatch, callNavigate) => {
 
     callDispatch(user);
     alert('Sign up successful!');
-    callNavigate('/welcome');
+    callNavigate(NAVIGATION_PATHS.WELCOME);
 }
