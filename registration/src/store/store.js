@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
-import userReducer from './reducers/userSlice';
+import userReducer from './reducers/users/userSlice';
 import thunk from 'redux-thunk';
 
 const store = configureStore({

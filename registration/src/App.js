@@ -1,25 +1,22 @@
 import './App.css';
 import React from 'react';
-import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import store from './store/store';
-import SignUpForm from './Components/SignUpForm/SignUpForm';
-import SignInForm from './Components/SignInForm/SignInForm';
-import WelcomePage from "./Components/WelcomePage/WelcomePage";
+import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
+import SignUpForm from './components/SignUpForm/SignUpForm';
+import SignInForm from './components/SignInForm/SignInForm';
+import WelcomePage from "./components/WelcomePage/WelcomePage";
+import {NAVIGATION_PATHS} from "./common/constants";
 
 const App = () => {
     return (
-        <Provider store={store}>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Navigate to="/signin"/>}/>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Navigate to={NAVIGATION_PATHS.SIGN_IN}/>}/>
 
-                    <Route path="/signin" element={<SignInForm/>}/>
-                    <Route path="/signup" element={<SignUpForm/>}/>
-                    <Route path="/welcome" element={<WelcomePage/>}/>
-                </Routes>
-            </Router>
-        </Provider>
+                <Route path={NAVIGATION_PATHS.SIGN_IN} element={<SignInForm/>}/>
+                <Route path={NAVIGATION_PATHS.SIGN_UP} element={<SignUpForm/>}/>
+                <Route path={NAVIGATION_PATHS.WELCOME} element={<WelcomePage/>}/>
+            </Routes>
+        </BrowserRouter>
     );
 };
 

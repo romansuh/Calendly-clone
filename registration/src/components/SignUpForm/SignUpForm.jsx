@@ -1,15 +1,18 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
-import {Button, TextField, Typography, Container} from '@mui/material';
-import {signUpUser} from '../../store/reducers/userSlice';
-import {submitSignUpFormData} from '../../submitting/submitRegistrationFormData';
-import {signUpValidationSchema} from "../../validation/validateLoginData";
+import {useNavigate, useLocation} from 'react-router-dom';
+import Paper from '@mui/material/Paper';
+import {Button, TextField, Typography} from '@mui/material';
+import {signUpUser} from '../../store/reducers/users/userSlice';
+import {submitSignUpFormData} from './submitSignUpFormData';
+import {signUpValidationSchema} from "./validatorSignUpForm";
 
-const SignUpForm = ({initialEmail}) => {
+const SignUpForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const initialEmail = location.state.newUserEmail;
 
     const formik = useFormik({
         initialValues: {
@@ -20,12 +23,28 @@ const SignUpForm = ({initialEmail}) => {
         },
         validationSchema: signUpValidationSchema,
         onSubmit: (values) => {
-            submitSignUpFormData(values, dispatch, signUpUser, navigate);
+            submitSignUpFormData(
+                values,
+                (newUser) => {
+                    dispatch(signUpUser(newUser));
+                },
+                (path) => {
+                    navigate(path);
+                });
         },
     });
 
     return (
-        <Container>
+        <Paper
+            sx={{
+                maxWidth: 350,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                padding: '20px'
+            }}
+            elevation={3}
+            square={false}
+        >
             <form onSubmit={formik.handleSubmit}>
                 <Typography variant="h4" gutterBottom>
                     Sign Up
@@ -85,8 +104,7 @@ const SignUpForm = ({initialEmail}) => {
                     SIGN UP
                 </Button>
             </form>
-
-        </Container>
+        </Paper>
     );
 };
 
