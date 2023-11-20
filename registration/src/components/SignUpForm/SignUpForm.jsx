@@ -2,7 +2,8 @@ import React from 'react';
 import {useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {useNavigate, useLocation} from 'react-router-dom';
-import {Button, TextField, Typography, Container} from '@mui/material';
+import Paper from '@mui/material/Paper';
+import {Button, TextField, Typography} from '@mui/material';
 import {signUpUser} from '../../store/reducers/users/userSlice';
 import {submitSignUpFormData} from './submitSignUpFormData';
 import {signUpValidationSchema} from "./validatorSignUpForm";
@@ -34,7 +35,16 @@ const SignUpForm = () => {
     });
 
     return (
-        <Container>
+        <Paper
+            sx={{
+                maxWidth: 350,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                padding: '20px'
+            }}
+            elevation={3}
+            square={false}
+        >
             <form onSubmit={formik.handleSubmit}>
                 <Typography variant="h4" gutterBottom>
                     Sign Up
@@ -94,8 +104,7 @@ const SignUpForm = () => {
                     SIGN UP
                 </Button>
             </form>
-
-        </Container>
+        </Paper>
     );
 };
 
