@@ -3,9 +3,9 @@ import {useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Button, TextField, Typography, Container} from '@mui/material';
-import {signInUser} from '../../store/reducers/userSlice';
-import {submitSignInFormData} from '../../submitting/submitRegistrationFormData';
-import {signInValidationSchema} from "../../validation/validateLoginData";
+import {signInUser} from '../../store/reducers/users/userSlice';
+import {submitSignInFormData} from './sumbitSignInFormData';
+import {signInValidationSchema} from "./validatorSignInForm";
 
 const SignInForm = () => {
     const dispatch = useDispatch();
@@ -18,7 +18,14 @@ const SignInForm = () => {
         },
         validationSchema: signInValidationSchema,
         onSubmit: (values) => {
-            submitSignInFormData(values, dispatch, signInUser, navigate);
+            submitSignInFormData(
+                values,
+                (storedUser) => {
+                dispatch(signInUser(storedUser));
+                },
+                (path) => {
+                    navigate(path);
+                });
         },
     });
 

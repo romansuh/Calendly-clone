@@ -3,24 +3,31 @@ import {useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {Button, TextField, Typography, Container} from '@mui/material';
-import {signUpUser} from '../../store/reducers/userSlice';
-import {submitSignUpFormData} from '../../submitting/submitRegistrationFormData';
-import {signUpValidationSchema} from "../../validation/validateLoginData";
+import {signUpUser} from '../../store/reducers/users/userSlice';
+import {submitSignUpFormData} from './submitSignUpFormData';
+import {signUpValidationSchema} from "./validatorSignUpForm";
 
-const SignUpForm = ({initialEmail}) => {
+const SignUpForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
             username: '',
-            email: initialEmail,
+            email: '',
             password: '',
             confirmPassword: '',
         },
         validationSchema: signUpValidationSchema,
         onSubmit: (values) => {
-            submitSignUpFormData(values, dispatch, signUpUser, navigate);
+            submitSignUpFormData(
+                values,
+                (newUser) => {
+                    dispatch(signUpUser(newUser));
+                },
+                (path) => {
+                    navigate(path);
+                });
         },
     });
 
