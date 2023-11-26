@@ -31,7 +31,7 @@ const CreateEventForm = () => {
     const [open, setOpen] = useState(true);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const users = useSelector(state => state.users.users);
+    const users = useSelector(state => state.user.users);
 
     const dispatch = useDispatch();
 

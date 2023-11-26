@@ -3,3 +3,8 @@ export const NAVIGATION_PATHS = {
     SIGN_IN: '/sign-in',
     SIGN_UP: '/sign-up',
 }
+
+export const LOCAL_STORAGE_KEYS = {
+    USERS: 'USERS',
+    EVENTS: 'EVENTS',
+}
