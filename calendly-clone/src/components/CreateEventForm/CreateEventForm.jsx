@@ -1,9 +1,18 @@
 import React, {useState} from 'react';
-import {Box, Button, Typography, Modal, TextField} from '@mui/material';
+import {
+    Box,
+    Button,
+    Typography,
+    Modal,
+    TextField,
+    Select,
+    MenuItem,
+    FormControl
+} from '@mui/material';
 import {useFormik} from 'formik';
 import {createEventValidationSchema} from "./validatorCreateEventForm";
 import {submitCreateEventFormData} from "./submitCreateEventFormData";
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {createNewEvent} from '../../store/reducers/events/eventSlice';
 
 const boxStyle = {
@@ -22,6 +31,7 @@ const CreateEventForm = () => {
     const [open, setOpen] = useState(true);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const users = useSelector(state => state.users.users);
 
     const dispatch = useDispatch();
 
@@ -29,7 +39,8 @@ const CreateEventForm = () => {
         initialValues: {
             name: '',
             description: '',
-            // TODO: selector of users and date picker
+            selectedUser: "",
+            dateTime: new Date(),
         },
         validationSchema: createEventValidationSchema,
         onSubmit: (values) => {
@@ -80,6 +91,40 @@ const CreateEventForm = () => {
                             error={formik.touched.description && Boolean(formik.errors.description)}
                             helperText={formik.touched.description && formik.errors.description}
                             margin="normal"
+                        />
+                        <FormControl>
+                            <Select
+                                labelId="selectedUser-label"
+                                id="selectedUser"
+                                name="selectedUser"
+                                label="Select User"
+                                value={formik.values.selectedUser}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.selectedUser &&
+                                    Boolean(formik.errors.selectedUser)
+                                }
+                            >
+                                {users.map((user) => (
+                                    <MenuItem key={user.id} value={user.name}>
+                                        {user.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            fullWidth
+                            id="dateTime"
+                            name="dateTime"
+                            label="Date and Time"
+                            type="datetime-local"
+                            value={formik.values.dateTime}
+                            onChange={formik.handleChange}
+                            error={formik.touched.dateTime && Boolean(formik.errors.dateTime)}
+                            helperText={formik.touched.dateTime && formik.errors.dateTime}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                         <Button type="submit" variant="contained" color="primary">
                             CREATE EVENT
