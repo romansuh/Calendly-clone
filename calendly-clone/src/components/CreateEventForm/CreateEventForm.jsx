@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
     Box,
     Button,
@@ -14,7 +14,6 @@ import {createEventValidationSchema} from "./validatorCreateEventForm";
 import {submitCreateEventFormData} from "./submitCreateEventFormData";
 import {useDispatch, useSelector} from 'react-redux';
 import {createNewEvent} from '../../store/reducers/events/eventSlice';
-import {fetchUsers} from "../../store/reducers/users/userSlice";
 
 const boxStyle = {
     position: 'absolute',

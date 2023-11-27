@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {useNavigate, useLocation} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import {Button, TextField, Typography} from '@mui/material';
-import {signUpUser} from '../../store/reducers/users/userSlice';
+import {addUser} from '../../store/reducers/users/userSlice';
 import {submitSignUpFormData} from './submitSignUpFormData';
 import {signUpValidationSchema} from "./validatorSignUpForm";
 
@@ -26,7 +26,7 @@ const SignUpForm = () => {
             submitSignUpFormData(
                 values,
                 (newUser) => {
-                    dispatch(signUpUser(newUser));
+                    dispatch(addUser(newUser));
                 },
                 (path) => {
                     navigate(path);
