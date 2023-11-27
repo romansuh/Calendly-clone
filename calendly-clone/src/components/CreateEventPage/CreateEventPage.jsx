@@ -1,10 +1,18 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Typography, Container} from '@mui/material';
 import CreateEventForm from "../CreateEventForm/CreateEventForm";
+import {fetchUsers} from "../../store/reducers/users/userSlice";
+import {useDispatch} from "react-redux";
 
 const CreateEventPage = () => {
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
     const handleCreateEvent = () => setIsModalFormOpen(true);
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, []);
 
     return (
         <>
