@@ -1,8 +1,9 @@
 export const submitCreateEventFormData = (values, callDispatch) => {
-    const event = {
-        name: values.name,
+    const eventData = {
+        eventName: values.eventName,
         description: values.description,
-    }
+        dateTime: values.dateTime,
+    };
 
-    callDispatch(event);
+    callDispatch(eventData);
 };

@@ -13,7 +13,7 @@ import {useFormik} from 'formik';
 import {createEventValidationSchema} from "./validatorCreateEventForm";
 import {submitCreateEventFormData} from "./submitCreateEventFormData";
 import {useDispatch, useSelector} from 'react-redux';
-import {createNewEvent} from '../../store/reducers/events/eventSlice';
+import {addNewEvent} from '../../store/reducers/events/eventSlice';
 
 const boxStyle = {
     position: 'absolute',
@@ -47,9 +47,9 @@ const CreateEventForm = () => {
             submitCreateEventFormData(
                 values,
                 (newEvent) => {
-                    dispatch(createNewEvent(newEvent))
+                    dispatch(addNewEvent(newEvent))
                 });
-            // console.table(values);
+
             handleClose();
         }
     })
