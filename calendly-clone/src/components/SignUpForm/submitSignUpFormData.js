@@ -3,7 +3,7 @@ import {NAVIGATION_PATHS} from "../../common/constants";
 export const submitSignUpFormData = (values, callDispatch, callNavigate) => {
     const user = {
         email: values.email,
-        username: values.name,
+        username: values.username,
         password: values.password,
     };
 

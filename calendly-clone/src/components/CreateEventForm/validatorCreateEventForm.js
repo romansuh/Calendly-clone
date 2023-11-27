@@ -11,8 +11,8 @@ export const createEventValidationSchema = Yup.object().shape({
         .min(10, 'At least 10 characters')
         .max(120, 'Not more than 120 characters')
         .required('Description is required'),
-    selectedUser: Yup
-        .string()
+    selectedUsers: Yup
+        .array()
         .required("This field is required"),
     dateTime: Yup
         .date()

@@ -3,7 +3,7 @@ import React from 'react';
 import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
-import CreateEventPage from "./components/CreateEventPage/CreateEventPage";
+import UserEventsPage from "./components/CreateEventPage/UserEventsPage";
 import {NAVIGATION_PATHS} from "./common/constants";
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
 
                 <Route path={NAVIGATION_PATHS.SIGN_IN} element={<SignInForm/>}/>
                 <Route path={NAVIGATION_PATHS.SIGN_UP} element={<SignUpForm/>}/>
-                <Route path={NAVIGATION_PATHS.CREATE_EVENT_PAGE} element={<CreateEventPage/>}/>
+                <Route path={NAVIGATION_PATHS.CREATE_EVENT_PAGE} element={<UserEventsPage/>}/>
             </Routes>
         </BrowserRouter>
     );

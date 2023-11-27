@@ -7,7 +7,8 @@ import {
     TextField,
     Select,
     MenuItem,
-    FormControl
+    FormControl,
+    InputLabel,
 } from '@mui/material';
 import {useFormik} from 'formik';
 import {createEventValidationSchema} from "./validatorCreateEventForm";
@@ -29,27 +30,31 @@ const boxStyle = {
 
 const CreateEventForm = () => {
     const [open, setOpen] = useState(true);
-    const handleOpen = () => setOpen(true);
+    // const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const users = useSelector(state => state.users.users);
+    const currentUser = useSelector(state => state.users.user);
 
     const dispatch = useDispatch();
+
+
 
     const formik = useFormik({
         initialValues: {
             name: '',
             description: '',
-            selectedUser: "",
+            selectedUsers: [currentUser],
             dateTime: new Date(),
         },
         validationSchema: createEventValidationSchema,
         onSubmit: (values) => {
+            console.log(values.selectedUsers);
             submitCreateEventFormData(
                 values,
+                currentUser.id,
                 (newEvent) => {
                     dispatch(addNewEvent(newEvent))
                 });
-
             handleClose();
         }
     })
@@ -93,21 +98,23 @@ const CreateEventForm = () => {
                             margin="normal"
                         />
                         <FormControl>
+                            <InputLabel id="selectedUsers-label">Select User</InputLabel>
                             <Select
-                                labelId="selectedUser-label"
-                                id="selectedUser"
-                                name="selectedUser"
-                                label="Select User"
-                                value={formik.values.selectedUser}
+                                labelId="selectedUsers-label"
+                                id="selectedUsers"
+                                name="selectedUsers"
+                                label="Select Users"
+                                multiple
+                                value={formik.values.selectedUsers}
                                 onChange={formik.handleChange}
                                 error={
-                                    formik.touched.selectedUser &&
-                                    Boolean(formik.errors.selectedUser)
+                                    formik.touched.selectedUsers &&
+                                    Boolean(formik.errors.selectedUsers)
                                 }
                             >
                                 {users.map((user) => (
-                                    <MenuItem key={user.id} value={user.name}>
-                                        {user.name}
+                                    <MenuItem key={user.id} value={user.username}>
+                                        {user.username}
                                     </MenuItem>
                                 ))}
                             </Select>

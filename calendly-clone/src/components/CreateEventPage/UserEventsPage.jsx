@@ -4,7 +4,7 @@ import CreateEventForm from "../CreateEventForm/CreateEventForm";
 import {fetchUsers} from "../../store/reducers/users/userSlice";
 import {useDispatch} from "react-redux";
 
-const CreateEventPage = () => {
+const UserEventsPage = () => {
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
     const handleCreateEvent = () => setIsModalFormOpen(true);
     const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const CreateEventPage = () => {
 
     useEffect(() => {
         dispatch(fetchUsers());
-    }, []);
+    }, [dispatch]);
 
     return (
         <>
@@ -21,7 +21,7 @@ const CreateEventPage = () => {
                     You can create events easily!
                 </Typography>
 
-                {isModalFormOpen ? <CreateEventForm/> : ''}
+                {isModalFormOpen ? <CreateEventForm isOpen={true}/> : ''}
                 <Button onClick={() => handleCreateEvent()} variant="contained" color="primary">
                     CREATE NEW EVENT
                 </Button>
@@ -32,4 +32,4 @@ const CreateEventPage = () => {
     );
 };
 
-export default CreateEventPage;
+export default UserEventsPage;
