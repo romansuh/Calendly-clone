@@ -1,16 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useFormik} from 'formik';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import {Button, TextField, Typography} from '@mui/material';
-import {signInUser} from '../../store/reducers/users/userSlice';
+import {fetchUsers, logInUser} from '../../store/reducers/users/userSlice';
 import {submitSignInFormData} from './sumbitSignInFormData';
 import {signInValidationSchema} from "./validatorSignInForm";
 
 const SignInForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const users = useSelector(state => state.users.users);
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, [dispatch]);
 
     const formik = useFormik({
         initialValues: {
@@ -19,10 +24,14 @@ const SignInForm = () => {
         },
         validationSchema: signInValidationSchema,
         onSubmit: (values) => {
+            const storedUser = users.find(
+                user => user.email === values.email && user.password === values.password
+            );
+
             submitSignInFormData(
-                values,
+                storedUser,
                 (storedUser) => {
-                dispatch(signInUser(storedUser));
+                dispatch(logInUser({...storedUser}));
                 },
                 (path, params) => {
                     navigate(path, params);

@@ -43,7 +43,7 @@ const CreateEventForm = () => {
         initialValues: {
             name: '',
             description: '',
-            selectedUsers: [currentUser],
+            selectedUsers: [],
             dateTime: new Date(),
         },
         validationSchema: createEventValidationSchema,

@@ -7,4 +7,5 @@ export const NAVIGATION_PATHS = {
 export const LOCAL_STORAGE_KEYS = {
     USERS: 'USERS',
     EVENTS: 'EVENTS',
+    TOKEN: 'TOKEN',
 }

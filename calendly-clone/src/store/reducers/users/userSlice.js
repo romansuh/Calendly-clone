@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from "axios";
 import {API_ADDRESS, API_ENDPOINTS} from "../../../common/api/api";
+import {LOCAL_STORAGE_KEYS} from "../../../common/constants";
 
 const apiUrlUsers = API_ADDRESS + API_ENDPOINTS.USERS;
 
@@ -17,23 +18,31 @@ export const userSlice = createSlice({
     initialState: {
         users: [],
         user: {},
+        token: undefined,
     },
     reducers: {
-        // signUpUser: (state, action) => {
-        //     const newUser = action.payload;
-        //     state.users = [...state.users, newUser];
-        //     localStorage.setItem(LOCAL_STORAGE_KEYS.USERS, JSON.stringify(state.users));
-        // },
-        // signInUser: (state, action) => {
-        //     const storedUser = action.payload;
-        //     state.email = storedUser.email;
-        //     state.isSignedIn = true;
-        //
-        //     const storedUserStorageData = JSON.parse(localStorage.getItem(state.email));
-        //     // storedUserStorageData.isSignedIn = true;
-        //
-        //     localStorage.setItem(state.email, JSON.stringify(storedUserStorageData));
-        // },
+        logInUser: (state, action) => {
+            let encodedToken = btoa(JSON.stringify(action.payload));
+            state.token = encodedToken;
+            localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, encodedToken);
+        },
+        logOutUser: (state) => {
+            state.token = undefined;
+            state.user = {};
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
+        },
+        getUserId: (state) => {
+            const storedToken = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
+            if (storedToken) {
+                const decodedToken = atob(storedToken);
+                const userInfo = JSON.parse(decodedToken);
+                const foundUser = state.users.find(
+                    (user) => user.email === userInfo.email
+                );
+
+                state.user = foundUser || {};
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -46,6 +55,6 @@ export const userSlice = createSlice({
     },
 });
 
-export const {signUpUser, signInUser} = userSlice.actions;
+export const {logInUser, logOutUser} = userSlice.actions;
 
 export default userSlice.reducer;
