@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import {FORM_VALIDATION_REGEXP} from "../../common/constants";
 
 export const signInValidationSchema = Yup.object().shape({
     email: Yup
@@ -8,7 +9,7 @@ export const signInValidationSchema = Yup.object().shape({
     password: Yup
         .string()
         .matches(
-            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+            FORM_VALIDATION_REGEXP.PASSWORD,
             'Invalid password: Minimum eight characters, at least one letter and one number.'
         )
         .required('Password is required'),

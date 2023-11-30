@@ -9,3 +9,7 @@ export const LOCAL_STORAGE_KEYS = {
     EVENTS: 'EVENTS',
     TOKEN: 'TOKEN',
 }
+
+export const FORM_VALIDATION_REGEXP = {
+    PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+}
