@@ -24,6 +24,7 @@ export const userSlice = createSlice({
         logInUser: (state, action) => {
             let encodedToken = btoa(JSON.stringify(action.payload));
             state.token = encodedToken;
+            state.user = action.payload;
             localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, encodedToken);
         },
         logOutUser: (state) => {

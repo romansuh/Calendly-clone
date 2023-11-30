@@ -1,12 +1,14 @@
 export const submitCreateEventFormData = (values, ownerId, callDispatch) => {
     const eventData = {
         ownerId: ownerId,
-        name: values.eventName,
+        name: values.name,
         description: values.description,
         dateTime: values.dateTime,
-        participantsId: values.selectedUsers.map(
-            (selectedUser) => ({
-                name: selectedUser,
+        participants: values.selectedUsers.map(
+            selectedUser => ({
+                id: selectedUser.id,
+                name: selectedUser.username,
+                email: selectedUser.email,
             })
         ),
     };

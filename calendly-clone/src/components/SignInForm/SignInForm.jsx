@@ -27,14 +27,19 @@ const SignInForm = () => {
             const storedUser = users.find(
                 user => user.email === values.email && user.password === values.password
             );
+            const tempEmail = values.email;
 
             submitSignInFormData(
                 storedUser,
                 (storedUser) => {
-                dispatch(logInUser({...storedUser}));
+                    dispatch(logInUser({...storedUser}));
                 },
-                (path, params) => {
-                    navigate(path, params);
+                (path) => {
+                    navigate(path, {
+                        state: {
+                            newUserEmail: tempEmail,
+                        }
+                    });
                 });
         },
     });

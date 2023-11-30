@@ -113,7 +113,7 @@ const CreateEventForm = () => {
                                 }
                             >
                                 {users.map((user) => (
-                                    <MenuItem key={user.id} value={user.username}>
+                                    <MenuItem key={user.id} value={user}>
                                         {user.username}
                                     </MenuItem>
                                 ))}
