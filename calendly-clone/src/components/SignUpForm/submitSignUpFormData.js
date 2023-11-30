@@ -9,5 +9,5 @@ export const submitSignUpFormData = (values, callDispatch, callNavigate) => {
 
     callDispatch(user);
     alert('Sign up successful!');
-    callNavigate(NAVIGATION_PATHS.CREATE_EVENT_PAGE);
+    callNavigate(NAVIGATION_PATHS.USER_EVENTS_PAGE);
 }
