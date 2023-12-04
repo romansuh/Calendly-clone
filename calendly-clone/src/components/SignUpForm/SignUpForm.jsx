@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {useNavigate, useLocation} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import {Button, TextField, Typography} from '@mui/material';
-import {addUser, fetchUsers} from '../../store/reducers/users/userSlice';
+import {addUser} from '../../store/reducers/users/userSlice';
 import {submitSignUpFormData} from './submitSignUpFormData';
 import {signUpValidationSchema} from "./validatorSignUpForm";
 

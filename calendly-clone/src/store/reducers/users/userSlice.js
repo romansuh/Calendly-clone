@@ -13,11 +13,20 @@ export const addUser = createAsyncThunk("users/addUser", (newUser) =>
     axios.post(apiUrlUsers, newUser).then((response) => response.data)
 );
 
+export const getUserById = createAsyncThunk("users/getUserById", (userId) =>
+    axios.get(apiUrlUsers).then(response =>{
+        return response.data.filter(user =>
+            user.id === userId
+        )
+    })
+);
+
 export const userSlice = createSlice({
     name: 'users',
     initialState: {
         users: [],
         user: {},
+        currentEventOwner: {},
         token: undefined,
     },
     reducers: {
@@ -32,18 +41,6 @@ export const userSlice = createSlice({
             state.user = {};
             localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
         },
-        getUserId: (state) => {
-            const storedToken = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
-            if (storedToken) {
-                const decodedToken = atob(storedToken);
-                const userInfo = JSON.parse(decodedToken);
-                const foundUser = state.users.find(
-                    (user) => user.email === userInfo.email
-                );
-
-                state.user = foundUser || {};
-            }
-        },
     },
     extraReducers: (builder) => {
         builder
@@ -52,6 +49,9 @@ export const userSlice = createSlice({
             })
             .addCase(addUser.fulfilled, (state, action) => {
                 state.users = [action.payload, ...state.users];
+            })
+            .addCase(getUserById.fulfilled, (state, action) => {
+                state.currentEventOwner = action.payload[0];
             });
     },
 });

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     Box,
     Button,
@@ -28,10 +28,7 @@ const boxStyle = {
     p: 4,
 };
 
-const CreateEventForm = () => {
-    const [open, setOpen] = useState(true);
-    // const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+const CreateEventForm = ({handleOpen, handleClose}) => {
     const users = useSelector(state => state.users.users);
     const currentUser = useSelector(state => state.users.user);
 
@@ -62,7 +59,7 @@ const CreateEventForm = () => {
     return (
         <div>
             <Modal
-                open={open}
+                open={true}
                 onClose={handleClose}
             >
                 <Box sx={boxStyle}>
@@ -100,11 +97,12 @@ const CreateEventForm = () => {
                         <FormControl>
                             <InputLabel id="selectedUsers-label">Select User</InputLabel>
                             <Select
+                                fullWidth
+                                multiple
                                 labelId="selectedUsers-label"
                                 id="selectedUsers"
                                 name="selectedUsers"
                                 label="Select Users"
-                                multiple
                                 value={formik.values.selectedUsers}
                                 onChange={formik.handleChange}
                                 error={
