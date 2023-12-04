@@ -69,6 +69,7 @@ const CreateEventForm = ({handleOpen, handleClose}) => {
 
                     <form onSubmit={formik.handleSubmit}>
                         <TextField
+                            style={{marginBottom: 10}}
                             fullWidth
                             id="name"
                             name="name"
@@ -81,6 +82,7 @@ const CreateEventForm = ({handleOpen, handleClose}) => {
                             margin="normal"
                         />
                         <TextField
+                            style={{marginBottom: 10}}
                             fullWidth
                             multiline
                             rows={5}
@@ -94,7 +96,7 @@ const CreateEventForm = ({handleOpen, handleClose}) => {
                             helperText={formik.touched.description && formik.errors.description}
                             margin="normal"
                         />
-                        <FormControl>
+                        <FormControl style={{minWidth: 200, marginBottom: 10}}>
                             <InputLabel id="selectedUsers-label">Select User</InputLabel>
                             <Select
                                 fullWidth
@@ -118,6 +120,7 @@ const CreateEventForm = ({handleOpen, handleClose}) => {
                             </Select>
                         </FormControl>
                         <TextField
+                            style={{marginBottom: 10}}
                             fullWidth
                             id="dateTime"
                             name="dateTime"
@@ -131,7 +134,11 @@ const CreateEventForm = ({handleOpen, handleClose}) => {
                                 shrink: true,
                             }}
                         />
-                        <Button type="submit" variant="contained" color="primary">
+                        <Button
+                            style={{marginBottom: 10}}
+                            type="submit"
+                            variant="contained"
+                            color="primary">
                             CREATE EVENT
                         </Button>
                     </form>
