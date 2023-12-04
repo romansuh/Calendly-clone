@@ -1,22 +1,41 @@
 import './App.css';
-import React from 'react';
-import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {Route, Routes, useNavigate} from 'react-router-dom';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import UserEventsPage from "./components/UserEventsPage/UserEventsPage";
 import {NAVIGATION_PATHS} from "./common/constants";
+import {useDispatch, useSelector} from "react-redux";
+import {getToken, logInUser} from "./store/reducers/users/userSlice";
+
 
 const App = () => {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Navigate to={NAVIGATION_PATHS.SIGN_IN}/>}/>
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.users.token);
+    const navigate = useNavigate();
 
-                <Route path={NAVIGATION_PATHS.SIGN_IN} element={<SignInForm/>}/>
-                <Route path={NAVIGATION_PATHS.SIGN_UP} element={<SignUpForm/>}/>
-                <Route path={NAVIGATION_PATHS.USER_EVENTS_PAGE} element={<UserEventsPage/>}/>
-            </Routes>
-        </BrowserRouter>
+    useEffect(() => {
+        dispatch(getToken());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (token) {
+            dispatch(
+                logInUser(
+                JSON.parse(atob(token))
+                )
+            );
+            navigate(NAVIGATION_PATHS.USER_EVENTS_PAGE);
+        } else {
+            navigate(NAVIGATION_PATHS.SIGN_IN);
+        }
+    }, [dispatch, token, navigate]);
+    return (
+        <Routes>
+            <Route path={NAVIGATION_PATHS.USER_EVENTS_PAGE} element={<UserEventsPage/>}/>
+            <Route path={NAVIGATION_PATHS.SIGN_IN} element={<SignInForm/>}/>
+            <Route path={NAVIGATION_PATHS.SIGN_UP} element={<SignUpForm/>}/>
+        </Routes>
     );
 };
 

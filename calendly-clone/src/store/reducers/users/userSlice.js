@@ -41,6 +41,9 @@ export const userSlice = createSlice({
             state.user = {};
             localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
         },
+        getToken: (state) => {
+            state.token = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -56,6 +59,6 @@ export const userSlice = createSlice({
     },
 });
 
-export const {logInUser, logOutUser} = userSlice.actions;
+export const {logInUser, logOutUser, getToken} = userSlice.actions;
 
 export default userSlice.reducer;
