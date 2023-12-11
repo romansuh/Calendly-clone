@@ -7,7 +7,7 @@ const apiUrlEvents = API_ADDRESS + API_ENDPOINTS.EVENTS;
 export const fetchEvents = createAsyncThunk("events/fetchEvents", (userId) => {
     return axios.get(apiUrlEvents).then((response) => {
         return response.data.filter((event) =>
-            event.participants.some((participant) => participant.id === userId)
+            event.ownerId === userId || event.participants.some((participant) => participant.id === userId)
         );
     });
 });

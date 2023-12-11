@@ -4,25 +4,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {getUserById} from "../../../store/reducers/users/userSlice";
 
 const EventsListItem = ({event}) => {
-    const currentUser = useSelector(state => state.users.user);
-    const owner = useSelector(state => state.users.currentEventOwner)
+    // const currentUser = useSelector(state => state.users.user);
+    // const owner = useSelector(state => state.users.currentEventOwner)
     const dispatch = useDispatch();
-    const isOwner = currentUser.id === event.ownerId;
     const ownerId = event.ownerId;
 
     useEffect(() => {
         dispatch(getUserById(ownerId));
-        console.table(owner);
     }, [dispatch, ownerId]);
 
     return (
         <>
-            <ListItem
-                key={event.id}
-                secondaryAction={
-                    (<span>Owner: {isOwner ? "You" : owner.username}</span>)
-                }
-            >
+            <ListItem key={event.id}>
                 <ListItemText
                     primary={event.name}
                     secondary={
@@ -32,7 +25,7 @@ const EventsListItem = ({event}) => {
                             <span>
                                 Date: {(new Date(event.dateTime)).toLocaleDateString()}
                                 <br/>
-                                Time: {(event.dateTime).split("T")[1]}
+                                Time: {(new Date(event.dateTime)).toLocaleTimeString().slice(0,5)}
                             </span>
                             <br/>
                             <span>Participants: {
