@@ -1,11 +1,9 @@
 import React, {useEffect} from "react";
-import {ListItem, ListItemText} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
+import {ListItem, ListItemText, Grid} from "@mui/material";
+import {useDispatch} from "react-redux";
 import {getUserById} from "../../../store/reducers/users/userSlice";
 
 const EventsListItem = ({event}) => {
-    // const currentUser = useSelector(state => state.users.user);
-    // const owner = useSelector(state => state.users.currentEventOwner)
     const dispatch = useDispatch();
     const ownerId = event.ownerId;
 
@@ -14,7 +12,7 @@ const EventsListItem = ({event}) => {
     }, [dispatch, ownerId]);
 
     return (
-        <>
+        <Grid item xs={10}>
             <ListItem key={event.id}>
                 <ListItemText
                     primary={event.name}
@@ -38,7 +36,7 @@ const EventsListItem = ({event}) => {
                     }
                 />
             </ListItem>
-        </>
+        </Grid>
     );
 };
 

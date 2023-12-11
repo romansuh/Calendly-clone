@@ -1,5 +1,14 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Typography, Container, List, Box, Tab} from '@mui/material';
+import {
+    Button,
+    Typography,
+    Container,
+    List,
+    Box,
+    Tab,
+    Paper,
+    Grid
+} from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
@@ -23,7 +32,7 @@ const UserEventsPage = () => {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.users.user);
     const userEvents = useSelector(state => state.events.events);
-
+    const pendingEvents = false;
     const ownedEvents = useMemo(() => {
         return userEvents.filter(event => {
             return event.ownerId === currentUser.id
@@ -67,29 +76,50 @@ const UserEventsPage = () => {
                             <Tab label="Pending a reply" value="pending"/>
                         </TabList>
                     </Box>
-                    <TabPanel value="own">
-                        The events you have created will display in this tab.
-                        <List>
-                            {ownedEvents.map((event) => {
-                                return <EventsListItem event={event}/>
-                            })}
-                        </List>
 
-                    </TabPanel>
-                    <TabPanel value="part">
-                        The events in which you take part will display in this tab.
-                        <List>
-                            {participatedEvents.map((event) => {
-                                return <EventsListItem event={event}/>
-                            })}
-                        </List>
-                    </TabPanel>
-                    <TabPanel value="pending">
-                        The events pending your reply for participation will display in this tab.
-                    </TabPanel>
+                    <Paper style={{maxHeight: 460, overflow: 'auto'}}>
+                        <Grid container spacing={2}>
+                            <TabPanel value="own">
+                                {!ownedEvents ?
+                                    <Typography variant="h6" gutterBottom>
+                                        You have not created any events, you may like to try!
+                                    </Typography> :
+                                    <List style={{maxHeight: "100", overflow: "auto"}}>
+                                        {ownedEvents.map((event) => {
+                                            return <EventsListItem event={event}/>
+                                        })}
+                                    </List>
+                                }
+                            </TabPanel>
+
+                            <TabPanel value="part">
+                                {!participatedEvents ?
+                                    <Typography variant="h6" gutterBottom>
+                                        You are not taking part in any events, you may like to check pending tab!
+                                    </Typography> :
+                                    <List style={{maxHeight: "100", overflow: "auto"}}>
+                                        {participatedEvents.map((event) => {
+                                            return <EventsListItem event={event}/>
+                                        })}
+                                    </List>
+                                }
+                            </TabPanel>
+
+                            <TabPanel value="pending">
+                                {!pendingEvents ?
+                                    <Typography variant="h6" gutterBottom>
+                                        You replied to all invitations by now!
+                                    </Typography> :
+                                    <List style={{maxHeight: "100", overflow: "auto"}}>
+                                        {participatedEvents.map((event) => {
+                                            return <EventsListItem event={event}/>
+                                        })}
+                                    </List>
+                                }
+                            </TabPanel>
+                        </Grid>
+                    </Paper>
                 </TabContext>
-
-
             </Container>
         </>
     );
