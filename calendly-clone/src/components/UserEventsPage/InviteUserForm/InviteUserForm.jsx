@@ -4,11 +4,7 @@ import {
     Button,
     Typography,
     Modal,
-    TextField,
-    Select,
-    MenuItem,
-    FormControl,
-    InputLabel,
+    TextField
 } from '@mui/material';
 import {useFormik} from 'formik';
 import {inviteUserValidationSchema} from "./validatorInviteUserForm";

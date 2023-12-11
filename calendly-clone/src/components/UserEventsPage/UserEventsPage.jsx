@@ -50,7 +50,7 @@ const UserEventsPage = () => {
 
         if (users.length === 1)
             setIsFirstUser(true)
-    }, [dispatch]);
+    }, [dispatch, users]);
 
     useEffect(() => {
         dispatch(fetchEvents(currentUser.id));
@@ -91,7 +91,7 @@ const UserEventsPage = () => {
                         Congratulations! You are the first user!
                         Invite other people to create events with them.
                     </Typography> &&
-                    <Button onClick={() => handleInviteUserForm()} variant="contained" color="primary">
+                    <Button onClick={() => handleInviteForm()} variant="contained" color="primary">
                         <Typography variant="button">INVITE NEW USER</Typography>
                     </Button>
                 }
