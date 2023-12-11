@@ -14,7 +14,7 @@ import {useFormik} from 'formik';
 import {createEventValidationSchema} from "./validatorCreateEventForm";
 import {submitCreateEventFormData} from "./submitCreateEventFormData";
 import {useDispatch, useSelector} from 'react-redux';
-import {addNewEvent} from '../../store/reducers/events/eventSlice';
+import {addNewEvent} from '../../../store/reducers/events/eventSlice';
 
 const boxStyle = {
     position: 'absolute',
@@ -28,13 +28,9 @@ const boxStyle = {
     p: 4,
 };
 
-const CreateEventForm = ({handleOpen, handleClose}) => {
-    const users = useSelector(state => state.users.users);
+const CreateEventForm = ({handleOpen, handleClose, users}) => {
     const currentUser = useSelector(state => state.users.user);
-
     const dispatch = useDispatch();
-
-
 
     const formik = useFormik({
         initialValues: {

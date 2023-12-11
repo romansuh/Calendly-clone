@@ -12,7 +12,7 @@ import {
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import CreateEventForm from "../CreateEventForm/CreateEventForm";
+import CreateEventForm from "./CreateEventForm/CreateEventForm";
 import {fetchUsers} from "../../store/reducers/users/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchEvents} from "../../store/reducers/events/eventSlice";
@@ -20,19 +20,15 @@ import EventsListItem from "./EventsListItem/EventsListItem";
 
 const UserEventsPage = () => {
     const [tabType, setTabType] = useState('own');
-
-    const handleChange = (event, newType) => {
-        setTabType(newType);
-    };
-
+    const [isFirstUser, setIsFirstUser] = useState(false);
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
-    const handleCreateEventForm = () => setIsModalFormOpen(!isModalFormOpen);
-    const handleOpen = () => setIsModalFormOpen(true);
-    const handleClose = () => setIsModalFormOpen(false);
+    const [isInviteFormOpen, setIsInviteFormOpen] = useState(false);
     const dispatch = useDispatch();
+    const users = useSelector(state => state.users.users);
     const currentUser = useSelector(state => state.users.user);
     const userEvents = useSelector(state => state.events.events);
     const pendingEvents = false;
+
     const ownedEvents = useMemo(() => {
         return userEvents.filter(event => {
             return event.ownerId === currentUser.id
@@ -49,11 +45,24 @@ const UserEventsPage = () => {
 
     useEffect(() => {
         dispatch(fetchUsers());
+
+        if (users.length === 1)
+            setIsFirstUser(true)
     }, [dispatch]);
 
     useEffect(() => {
         dispatch(fetchEvents(currentUser.id));
-    }, [dispatch, currentUser.id])
+    }, [dispatch, currentUser.id]);
+
+
+    const handleCreateEventForm = () => setIsModalFormOpen(!isModalFormOpen);
+    const handleInviteForm = () => setIsInviteFormOpen(!isInviteFormOpen);
+    const handleOpen = () => setIsModalFormOpen(true);
+    const handleClose = () => setIsModalFormOpen(false);
+
+    const handleChange = (event, newType) => {
+        setTabType(newType);
+    };
 
     return (
         <>
@@ -63,8 +72,22 @@ const UserEventsPage = () => {
                     You can create events easily!
                 </Typography>
 
-                {isModalFormOpen && <CreateEventForm handleOpen={handleOpen} handleClose={handleClose}/>}
-                <Button onClick={() => handleCreateEventForm()} variant="contained" color="primary">
+                {isModalFormOpen && <CreateEventForm
+                    handleOpen={handleOpen}
+                    handleClose={handleClose}
+                    users={users}/>}
+
+                {isFirstUser &&
+                    <Typography variant="h4" gutterBottom>
+                        Congratulations! You are the first user!
+                        Invite other people to create events with them.
+                    </Typography> &&
+                    <Button onClick={() => handleInviteUserForm()} variant="contained" color="primary">
+                        INVITE NEW USER
+                    </Button>
+                }
+
+                <Button disabled={isFirstUser} onClick={() => handleCreateEventForm()} variant="contained" color="primary">
                     CREATE NEW EVENT
                 </Button>
 
