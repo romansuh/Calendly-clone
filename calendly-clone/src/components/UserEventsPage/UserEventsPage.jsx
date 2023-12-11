@@ -17,12 +17,14 @@ import {fetchUsers} from "../../store/reducers/users/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchEvents} from "../../store/reducers/events/eventSlice";
 import EventsListItem from "./EventsListItem/EventsListItem";
+import InviteUserForm from "./InviteUserForm/InviteUserForm";
 
 const UserEventsPage = () => {
     const [tabType, setTabType] = useState('own');
     const [isFirstUser, setIsFirstUser] = useState(false);
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
     const [isInviteFormOpen, setIsInviteFormOpen] = useState(false);
+
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
     const currentUser = useSelector(state => state.users.user);
@@ -56,9 +58,12 @@ const UserEventsPage = () => {
 
 
     const handleCreateEventForm = () => setIsModalFormOpen(!isModalFormOpen);
+    const handleOpenCreateEvent = () => setIsModalFormOpen(true);
+    const handleCloseCreateEvent = () => setIsModalFormOpen(false);
+
     const handleInviteForm = () => setIsInviteFormOpen(!isInviteFormOpen);
-    const handleOpen = () => setIsModalFormOpen(true);
-    const handleClose = () => setIsModalFormOpen(false);
+    const handleOpenInviteUser = () => setIsModalFormOpen(true);
+    const handleCloseInviteUser = () => setIsModalFormOpen(false);
 
     const handleChange = (event, newType) => {
         setTabType(newType);
@@ -73,9 +78,13 @@ const UserEventsPage = () => {
                 </Typography>
 
                 {isModalFormOpen && <CreateEventForm
-                    handleOpen={handleOpen}
-                    handleClose={handleClose}
+                    handleOpen={handleOpenCreateEvent}
+                    handleClose={handleCloseCreateEvent}
                     users={users}/>}
+
+                {isInviteFormOpen && <InviteUserForm
+                    handleOpen={handleOpenInviteUser}
+                    handleClose={handleCloseInviteUser}/>}
 
                 {isFirstUser &&
                     <Typography variant="h4" gutterBottom>
@@ -83,12 +92,12 @@ const UserEventsPage = () => {
                         Invite other people to create events with them.
                     </Typography> &&
                     <Button onClick={() => handleInviteUserForm()} variant="contained" color="primary">
-                        INVITE NEW USER
+                        <Typography variant="button">INVITE NEW USER</Typography>
                     </Button>
                 }
 
                 <Button disabled={isFirstUser} onClick={() => handleCreateEventForm()} variant="contained" color="primary">
-                    CREATE NEW EVENT
+                    <Typography variant="button">CREATE NEW EVENT</Typography>
                 </Button>
 
                 <TabContext value={tabType}>
