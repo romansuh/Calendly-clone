@@ -1,6 +1,6 @@
 import './App.css';
 import React, {useEffect} from 'react';
-import {Route, Routes, useNavigate} from 'react-router-dom';
+import {Route, Routes, useNavigate, useLocation} from 'react-router-dom';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import UserEventsPage from "./components/UserEventsPage/UserEventsPage";
@@ -13,6 +13,7 @@ const App = () => {
     const dispatch = useDispatch();
     const token = useSelector(state => state.users.token);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         dispatch(getToken());
@@ -26,10 +27,10 @@ const App = () => {
                 )
             );
             navigate(NAVIGATION_PATHS.USER_EVENTS_PAGE);
-        } else {
+        } else if (!(location.pathname === NAVIGATION_PATHS.SIGN_UP)){
             navigate(NAVIGATION_PATHS.SIGN_IN);
         }
-    }, [dispatch, token, navigate]);
+    }, [dispatch, token, navigate, location]);
     return (
         <Routes>
             <Route path={NAVIGATION_PATHS.USER_EVENTS_PAGE} element={<UserEventsPage/>}/>

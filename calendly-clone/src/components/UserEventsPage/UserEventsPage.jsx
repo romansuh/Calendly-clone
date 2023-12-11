@@ -29,7 +29,7 @@ const UserEventsPage = () => {
     const users = useSelector(state => state.users.users);
     const currentUser = useSelector(state => state.users.user);
     const userEvents = useSelector(state => state.events.events);
-    const pendingEvents = false;
+    const pendingEvents = [];
 
     const ownedEvents = useMemo(() => {
         return userEvents.filter(event => {
@@ -54,7 +54,7 @@ const UserEventsPage = () => {
 
     useEffect(() => {
         dispatch(fetchEvents(currentUser.id));
-    }, [dispatch, currentUser.id]);
+    }, [dispatch, currentUser]);
 
 
     const handleCreateEventForm = () => setIsModalFormOpen(!isModalFormOpen);
@@ -91,7 +91,12 @@ const UserEventsPage = () => {
                         Congratulations! You are the first user!
                         Invite other people to create events with them.
                     </Typography> &&
-                    <Button onClick={() => handleInviteForm()} variant="contained" color="primary">
+                    <Button
+                        style={{marginLeft: 10}}
+                        onClick={() => handleInviteForm()}
+                        variant="contained"
+                        color="primary"
+                    >
                         <Typography variant="button">INVITE NEW USER</Typography>
                     </Button>
                 }
@@ -112,7 +117,7 @@ const UserEventsPage = () => {
                     <Paper style={{maxHeight: 460, overflow: 'auto'}}>
                         <Grid container spacing={2}>
                             <TabPanel value="own">
-                                {!ownedEvents ?
+                                {ownedEvents.length === 0 ?
                                     <Typography variant="h6" gutterBottom>
                                         You have not created any events, you may like to try!
                                     </Typography> :
@@ -125,7 +130,7 @@ const UserEventsPage = () => {
                             </TabPanel>
 
                             <TabPanel value="part">
-                                {!participatedEvents ?
+                                {participatedEvents.length === 0 ?
                                     <Typography variant="h6" gutterBottom>
                                         You are not taking part in any events, you may like to check pending tab!
                                     </Typography> :
@@ -138,7 +143,7 @@ const UserEventsPage = () => {
                             </TabPanel>
 
                             <TabPanel value="pending">
-                                {!pendingEvents ?
+                                {pendingEvents.length === 0 ?
                                     <Typography variant="h6" gutterBottom>
                                         You replied to all invitations by now!
                                     </Typography> :
