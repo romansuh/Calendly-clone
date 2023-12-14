@@ -29,20 +29,18 @@ const UserEventsPage = () => {
     const users = useSelector(state => state.users.users);
     const currentUser = useSelector(state => state.users.user);
     const userEvents = useSelector(state => state.events.events);
-    const pendingEvents = [];
 
-    const ownedEvents = useMemo(() => {
-        return userEvents.filter(event => {
+    const [ownedEvents, participatedEvents, pendingEvents] = useMemo(() => {
+        const owned = userEvents.filter(event => {
             return event.ownerId === currentUser.id
         });
-    }, [userEvents, currentUser]);
-
-    const participatedEvents = useMemo(() => {
-        return userEvents.filter(event => {
+        const participated = userEvents.filter(event => {
             return event.participants.some(
                 participant => participant.id === currentUser.id
             );
         });
+
+        return [owned, participated, []];
     }, [userEvents, currentUser]);
 
     useEffect(() => {
