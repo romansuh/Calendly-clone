@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import {useFormik} from 'formik';
 import {inviteUserValidationSchema} from "./validatorInviteUserForm";
+import CloseIcon from '@mui/icons-material/Close';
 
 const boxStyle = {
     position: 'absolute',
@@ -69,6 +70,7 @@ const InviteUserForm = ({handleOpen, handleClose}) => {
 
                     <Button onClick={() => handleClose()} variant="outlined" color="primary">
                         <Typography variant="button">CLOSE</Typography>
+                        <CloseIcon/>
                     </Button>
                 </Box>
             </Modal>

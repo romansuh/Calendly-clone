@@ -7,23 +7,32 @@ import {
     Box,
     Tab,
     Paper,
-    Grid
+    Grid,
+    AppBar,
+    Toolbar,
+    Tooltip,
+    IconButton
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import CreateEventForm from "./CreateEventForm/CreateEventForm";
-import {fetchUsers} from "../../store/reducers/users/userSlice";
+import {fetchUsers, logOutUser} from "../../store/reducers/users/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchEvents} from "../../store/reducers/events/eventSlice";
 import EventsListItem from "./EventsListItem/EventsListItem";
 import InviteUserForm from "./InviteUserForm/InviteUserForm";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import {LOCAL_STORAGE_KEYS, NAVIGATION_PATHS} from "../../common/constants";
+import {useNavigate} from "react-router-dom";
 
 const UserEventsPage = () => {
     const [tabType, setTabType] = useState('own');
     const [isFirstUser, setIsFirstUser] = useState(false);
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
     const [isInviteFormOpen, setIsInviteFormOpen] = useState(false);
+
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
@@ -63,18 +72,47 @@ const UserEventsPage = () => {
     const handleOpenInviteUser = () => setIsModalFormOpen(true);
     const handleCloseInviteUser = () => setIsModalFormOpen(false);
 
+    const handleLogout = () => {
+        localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
+        dispatch(logOutUser());
+        navigate(NAVIGATION_PATHS.SIGN_IN);
+    };
+
     const handleChange = (event, newType) => {
         setTabType(newType);
     };
 
     return (
         <>
-            <Container>
-                <h2>Hello, {currentUser.username}</h2>
-                <Typography variant="h4" gutterBottom>
-                    You can create events easily!
-                </Typography>
+            <Box sx={{flexGrow: 1}}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                            Hello, {currentUser.username}! You can create events easily!
+                        </Typography>
 
+                        <Button
+                            disabled={isFirstUser}
+                            onClick={() => handleCreateEventForm()}
+                            color="inherit"
+                        >
+                            <Typography variant="button">CREATE NEW EVENT</Typography>
+                        </Button>
+
+                        <Tooltip title="Log out">
+                            <IconButton
+                                variant="text"
+                                type="submit"
+                                onClick={() => handleLogout()}
+                            >
+                                <LogoutOutlinedIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    </Toolbar>
+                </AppBar>
+            </Box>
+
+            <Container>
                 {isModalFormOpen && <CreateEventForm
                     handleOpen={handleOpenCreateEvent}
                     handleClose={handleCloseCreateEvent}
@@ -85,23 +123,19 @@ const UserEventsPage = () => {
                     handleClose={handleCloseInviteUser}/>}
 
                 {isFirstUser &&
-                    <Typography variant="h4" gutterBottom>
-                        Congratulations! You are the first user!
-                        Invite other people to create events with them.
-                    </Typography> &&
-                    <Button
-                        style={{marginLeft: 10}}
-                        onClick={() => handleInviteForm()}
-                        variant="contained"
-                        color="primary"
-                    >
-                        <Typography variant="button">INVITE NEW USER</Typography>
-                    </Button>
-                }
-
-                <Button disabled={isFirstUser} onClick={() => handleCreateEventForm()} variant="contained" color="primary">
-                    <Typography variant="button">CREATE NEW EVENT</Typography>
+                <Typography variant="h4" gutterBottom>
+                    Congratulations! You are the first user!
+                    Invite other people to create events with them.
+                </Typography> &&
+                <Button
+                    style={{marginLeft: 10}}
+                    onClick={() => handleInviteForm()}
+                    variant="contained"
+                    color="primary"
+                >
+                    <Typography variant="button">INVITE NEW USER</Typography>
                 </Button>
+                }
 
                 <TabContext value={tabType}>
                     <Box sx={{borderBottom: 1, borderColor: 'divider'}}>

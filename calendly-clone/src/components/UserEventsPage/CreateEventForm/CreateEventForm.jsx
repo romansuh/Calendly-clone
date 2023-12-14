@@ -15,6 +15,7 @@ import {createEventValidationSchema} from "./validatorCreateEventForm";
 import {submitCreateEventFormData} from "./submitCreateEventFormData";
 import {useDispatch, useSelector} from 'react-redux';
 import {addNewEvent} from '../../../store/reducers/events/eventSlice';
+import CloseIcon from '@mui/icons-material/Close';
 
 const boxStyle = {
     position: 'absolute',
@@ -140,7 +141,7 @@ const CreateEventForm = ({handleOpen, handleClose, users}) => {
                     </form>
 
                     <Button onClick={() => handleClose()} variant="outlined" color="primary">
-                        CLOSE
+                        CLOSE<CloseIcon/>
                     </Button>
                 </Box>
             </Modal>
