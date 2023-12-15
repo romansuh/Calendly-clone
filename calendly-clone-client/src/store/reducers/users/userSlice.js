@@ -14,11 +14,7 @@ export const addUser = createAsyncThunk("users/addUser", (newUser) =>
 );
 
 export const getUserById = createAsyncThunk("users/getUserById", (userId) =>
-    axios.get(apiUrlUsers).then(response =>{
-        return response.data.filter(user =>
-            user.id === userId
-        )
-    })
+    axios.get(`${apiUrlUsers}/${userId}`).then((response) => response.data)
 );
 
 export const userSlice = createSlice({

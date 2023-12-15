@@ -19,7 +19,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import CreateEventForm from "./CreateEventForm/CreateEventForm";
 import {fetchUsers, logOutUser} from "../../store/reducers/users/userSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchEvents} from "../../store/reducers/events/eventSlice";
+import {changeParticipantStatus, fetchEvents} from "../../store/reducers/events/eventSlice";
 import EventsListItem from "./EventsListItem/EventsListItem";
 import InviteUserForm from "./InviteUserForm/InviteUserForm";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
@@ -89,8 +89,19 @@ const UserEventsPage = () => {
         navigate(NAVIGATION_PATHS.SIGN_IN);
     };
 
-    const handleChange = (event, newType) => {
+    const handleTabChange = (event, newType) => {
         setTabType(newType);
+    };
+
+    const handleStatusChange = (eventId, status) => {
+        console.log('1')
+        dispatch(
+            changeParticipantStatus({
+                eventId: eventId,
+                participantId: currentUser.id,
+                status: status,
+            })
+        );
     };
 
     return (
@@ -150,7 +161,7 @@ const UserEventsPage = () => {
 
                 <TabContext value={tabType}>
                     <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                        <TabList onChange={handleChange}>
+                        <TabList onChange={handleTabChange}>
                             <Tab label="Owning" value="own"/>
                             <Tab label="Participating" value="part"/>
                             <Tab label="Pending a reply" value="pending"/>
@@ -158,7 +169,7 @@ const UserEventsPage = () => {
                     </Box>
 
                     <Paper style={{maxHeight: 460, overflow: 'auto'}}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={1}>
                             <TabPanel value="own">
                                 {ownedEvents.length === 0 ?
                                     <Typography variant="h6" gutterBottom>
@@ -166,7 +177,7 @@ const UserEventsPage = () => {
                                     </Typography> :
                                     <List style={{maxHeight: "100", overflow: "auto"}}>
                                         {ownedEvents.map((event) => {
-                                            return <EventsListItem event={event}/>
+                                            return <EventsListItem event={event} handleStatusChange={handleStatusChange}/>
                                         })}
                                     </List>
                                 }
@@ -179,7 +190,7 @@ const UserEventsPage = () => {
                                     </Typography> :
                                     <List style={{maxHeight: "100", overflow: "auto"}}>
                                         {participatedEvents.map((event) => {
-                                            return <EventsListItem event={event}/>
+                                            return <EventsListItem event={event} handleStatusChange={handleStatusChange}/>
                                         })}
                                     </List>
                                 }
@@ -192,7 +203,11 @@ const UserEventsPage = () => {
                                     </Typography> :
                                     <List style={{maxHeight: "100", overflow: "auto"}}>
                                         {pendingEvents.map((event) => {
-                                            return <EventsListItem event={event}/>
+                                            return <EventsListItem
+                                                event={event}
+                                                handleStatusChange={handleStatusChange}
+                                                isPendingFlag={true}
+                                            />
                                         })}
                                     </List>
                                 }

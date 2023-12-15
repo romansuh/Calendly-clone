@@ -17,4 +17,5 @@ export const FORM_VALIDATION_REGEXP = {
 export const PARTICIPANT_STATUS = {
     ACCEPTED: "accepted",
     PENDING: "pending",
+    DECLINED: "declined",
 }
