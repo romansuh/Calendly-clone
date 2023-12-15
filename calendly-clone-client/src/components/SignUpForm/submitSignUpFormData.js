@@ -1,4 +1,4 @@
-import {NAVIGATION_PATHS} from "../../common/constants";
+import {NAVIGATION_PATHS} from "../../common/constants/constants";
 
 export const submitSignUpFormData = (values, callDispatch, callNavigate) => {
     const user = {

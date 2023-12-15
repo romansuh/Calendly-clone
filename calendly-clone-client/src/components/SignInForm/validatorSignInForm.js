@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import {FORM_VALIDATION_REGEXP} from "../../common/constants";
+import {FORM_VALIDATION_REGEXP} from "../../common/constants/constants";
 
 export const signInValidationSchema = Yup.object().shape({
     email: Yup

@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from "axios";
-import {API_ADDRESS, API_ENDPOINTS} from "../../../common/api/api";
+import {API_ADDRESS, API_ENDPOINTS} from "../../../common/constants/api";
 
 const apiUrlEvents = API_ADDRESS + API_ENDPOINTS.EVENTS;
 

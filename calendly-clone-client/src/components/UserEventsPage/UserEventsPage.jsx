@@ -23,7 +23,7 @@ import {fetchEvents} from "../../store/reducers/events/eventSlice";
 import EventsListItem from "./EventsListItem/EventsListItem";
 import InviteUserForm from "./InviteUserForm/InviteUserForm";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import {LOCAL_STORAGE_KEYS, NAVIGATION_PATHS} from "../../common/constants";
+import {LOCAL_STORAGE_KEYS, NAVIGATION_PATHS} from "../../common/constants/constants";
 import {useNavigate} from "react-router-dom";
 
 const UserEventsPage = () => {
@@ -54,14 +54,16 @@ const UserEventsPage = () => {
 
     useEffect(() => {
         dispatch(fetchUsers());
-
-        if (users.length === 1)
-            setIsFirstUser(true)
-    }, [dispatch, users]);
+    }, []);
 
     useEffect(() => {
         dispatch(fetchEvents(currentUser.id));
-    }, [dispatch, currentUser]);
+    }, [currentUser.id]);
+
+    useEffect(() => {
+        if (users.length === 1)
+            setIsFirstUser(true)
+    }, [users]);
 
 
     const handleCreateEventForm = () => setIsModalFormOpen(!isModalFormOpen);
@@ -87,7 +89,7 @@ const UserEventsPage = () => {
             <Box sx={{flexGrow: 1}}>
                 <AppBar position="static">
                     <Toolbar>
-                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                        <Typography variant="h5" component="div" sx={{flexGrow: 1}}>
                             Hello, {currentUser.username}! You can create events easily!
                         </Typography>
 
