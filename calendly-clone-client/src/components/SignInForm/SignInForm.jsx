@@ -15,7 +15,7 @@ const SignInForm = () => {
 
     useEffect(() => {
         dispatch(fetchUsers());
-    }, [dispatch]);
+    }, []);
 
     const formik = useFormik({
         initialValues: {

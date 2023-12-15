@@ -23,7 +23,7 @@ import {fetchEvents} from "../../store/reducers/events/eventSlice";
 import EventsListItem from "./EventsListItem/EventsListItem";
 import InviteUserForm from "./InviteUserForm/InviteUserForm";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import {LOCAL_STORAGE_KEYS, NAVIGATION_PATHS} from "../../common/constants/constants";
+import {LOCAL_STORAGE_KEYS, NAVIGATION_PATHS, PARTICIPANT_STATUS} from "../../common/constants/constants";
 import {useNavigate} from "react-router-dom";
 
 const UserEventsPage = () => {
@@ -43,13 +43,22 @@ const UserEventsPage = () => {
         const owned = userEvents.filter(event => {
             return event.ownerId === currentUser.id
         });
+
         const participated = userEvents.filter(event => {
-            return event.participants.some(
-                participant => participant.id === currentUser.id
+            const filteredEvents = event.participants.filter(participant =>
+                participant.status === PARTICIPANT_STATUS.ACCEPTED && participant.id === currentUser.id
             );
+            return filteredEvents.length > 0
         });
 
-        return [owned, participated, []];
+        const pending = userEvents.filter(event => {
+            const filteredEvents = event.participants.filter(participant =>
+                participant.status === PARTICIPANT_STATUS.PENDING && participant.id === currentUser.id
+            );
+            return filteredEvents.length > 0
+        })
+
+        return [owned, participated, pending];
     }, [userEvents, currentUser]);
 
     useEffect(() => {
@@ -141,7 +150,7 @@ const UserEventsPage = () => {
 
                 <TabContext value={tabType}>
                     <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                        <TabList onChange={handleChange} aria-label="lab API tabs example">
+                        <TabList onChange={handleChange}>
                             <Tab label="Owning" value="own"/>
                             <Tab label="Participating" value="part"/>
                             <Tab label="Pending a reply" value="pending"/>
@@ -182,7 +191,7 @@ const UserEventsPage = () => {
                                         You replied to all invitations by now!
                                     </Typography> :
                                     <List style={{maxHeight: "100", overflow: "auto"}}>
-                                        {participatedEvents.map((event) => {
+                                        {pendingEvents.map((event) => {
                                             return <EventsListItem event={event}/>
                                         })}
                                     </List>

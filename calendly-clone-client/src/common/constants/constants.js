@@ -13,3 +13,8 @@ export const LOCAL_STORAGE_KEYS = {
 export const FORM_VALIDATION_REGEXP = {
     PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
 }
+
+export const PARTICIPANT_STATUS = {
+    ACCEPTED: "accepted",
+    PENDING: "pending",
+}

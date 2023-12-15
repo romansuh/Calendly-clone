@@ -38,7 +38,7 @@ const CreateEventForm = ({handleOpen, handleClose, users}) => {
             name: '',
             description: '',
             selectedUsers: [],
-            dateTime: new Date(),
+            dateTime: '',
         },
         validationSchema: createEventValidationSchema,
         onSubmit: (values) => {
