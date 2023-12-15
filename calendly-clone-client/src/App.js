@@ -4,7 +4,7 @@ import {Route, Routes, useNavigate, useLocation} from 'react-router-dom';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import UserEventsPage from "./components/UserEventsPage/UserEventsPage";
-import {NAVIGATION_PATHS} from "./common/constants";
+import {NAVIGATION_PATHS} from "./common/constants/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {getToken, logInUser} from "./store/reducers/users/userSlice";
 
@@ -20,15 +20,17 @@ const App = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        if (token) {
+        if (!token) {
+            if (!(location.pathname === NAVIGATION_PATHS.SIGN_UP)) {
+                navigate(NAVIGATION_PATHS.SIGN_IN);
+            }
+        } else {
             dispatch(
                 logInUser(
-                JSON.parse(atob(token))
+                    JSON.parse(atob(token))
                 )
             );
             navigate(NAVIGATION_PATHS.USER_EVENTS_PAGE);
-        } else if (!(location.pathname === NAVIGATION_PATHS.SIGN_UP)){
-            navigate(NAVIGATION_PATHS.SIGN_IN);
         }
     }, [dispatch, token, navigate, location]);
     return (

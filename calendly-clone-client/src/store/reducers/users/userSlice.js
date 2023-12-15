@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from "axios";
-import {API_ADDRESS, API_ENDPOINTS} from "../../../common/api/api";
-import {LOCAL_STORAGE_KEYS} from "../../../common/constants";
+import {API_ADDRESS, API_ENDPOINTS} from "../../../common/constants/api";
+import {LOCAL_STORAGE_KEYS} from "../../../common/constants/constants";
 
 const apiUrlUsers = API_ADDRESS + API_ENDPOINTS.USERS;
 
@@ -14,11 +14,7 @@ export const addUser = createAsyncThunk("users/addUser", (newUser) =>
 );
 
 export const getUserById = createAsyncThunk("users/getUserById", (userId) =>
-    axios.get(apiUrlUsers).then(response =>{
-        return response.data.filter(user =>
-            user.id === userId
-        )
-    })
+    axios.get(`${apiUrlUsers}/${userId}`).then((response) => response.data)
 );
 
 export const userSlice = createSlice({
@@ -26,8 +22,7 @@ export const userSlice = createSlice({
     initialState: {
         users: [],
         user: {},
-        currentEventOwner: {},
-        token: undefined,
+        token: null,
     },
     reducers: {
         logInUser: (state, action) => {
@@ -37,7 +32,7 @@ export const userSlice = createSlice({
             localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, encodedToken);
         },
         logOutUser: (state) => {
-            state.token = undefined;
+            state.token = null;
             state.user = {};
             localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
         },

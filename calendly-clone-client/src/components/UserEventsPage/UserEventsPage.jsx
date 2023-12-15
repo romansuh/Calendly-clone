@@ -19,11 +19,11 @@ import TabPanel from '@mui/lab/TabPanel';
 import CreateEventForm from "./CreateEventForm/CreateEventForm";
 import {fetchUsers, logOutUser} from "../../store/reducers/users/userSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchEvents} from "../../store/reducers/events/eventSlice";
+import {changeParticipantStatus, fetchEvents} from "../../store/reducers/events/eventSlice";
 import EventsListItem from "./EventsListItem/EventsListItem";
 import InviteUserForm from "./InviteUserForm/InviteUserForm";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import {LOCAL_STORAGE_KEYS, NAVIGATION_PATHS} from "../../common/constants";
+import {LOCAL_STORAGE_KEYS, NAVIGATION_PATHS, PARTICIPANT_STATUS} from "../../common/constants/constants";
 import {useNavigate} from "react-router-dom";
 
 const UserEventsPage = () => {
@@ -43,25 +43,36 @@ const UserEventsPage = () => {
         const owned = userEvents.filter(event => {
             return event.ownerId === currentUser.id
         });
+
         const participated = userEvents.filter(event => {
-            return event.participants.some(
-                participant => participant.id === currentUser.id
+            const filteredEvents = event.participants.filter(participant =>
+                participant.status === PARTICIPANT_STATUS.ACCEPTED && participant.id === currentUser.id
             );
+            return filteredEvents.length > 0
         });
 
-        return [owned, participated, []];
+        const pending = userEvents.filter(event => {
+            const filteredEvents = event.participants.filter(participant =>
+                participant.status === PARTICIPANT_STATUS.PENDING && participant.id === currentUser.id
+            );
+            return filteredEvents.length > 0
+        })
+
+        return [owned, participated, pending];
     }, [userEvents, currentUser]);
 
     useEffect(() => {
         dispatch(fetchUsers());
-
-        if (users.length === 1)
-            setIsFirstUser(true)
-    }, [dispatch, users]);
+    }, []);
 
     useEffect(() => {
         dispatch(fetchEvents(currentUser.id));
-    }, [dispatch, currentUser]);
+    }, [currentUser.id]);
+
+    useEffect(() => {
+        if (users.length === 1)
+            setIsFirstUser(true)
+    }, [users]);
 
 
     const handleCreateEventForm = () => setIsModalFormOpen(!isModalFormOpen);
@@ -78,8 +89,19 @@ const UserEventsPage = () => {
         navigate(NAVIGATION_PATHS.SIGN_IN);
     };
 
-    const handleChange = (event, newType) => {
+    const handleTabChange = (event, newType) => {
         setTabType(newType);
+    };
+
+    const handleStatusChange = (eventId, status) => {
+        console.log('1')
+        dispatch(
+            changeParticipantStatus({
+                eventId: eventId,
+                participantId: currentUser.id,
+                status: status,
+            })
+        );
     };
 
     return (
@@ -87,7 +109,7 @@ const UserEventsPage = () => {
             <Box sx={{flexGrow: 1}}>
                 <AppBar position="static">
                     <Toolbar>
-                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                        <Typography variant="h5" component="div" sx={{flexGrow: 1}}>
                             Hello, {currentUser.username}! You can create events easily!
                         </Typography>
 
@@ -139,7 +161,7 @@ const UserEventsPage = () => {
 
                 <TabContext value={tabType}>
                     <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                        <TabList onChange={handleChange} aria-label="lab API tabs example">
+                        <TabList onChange={handleTabChange}>
                             <Tab label="Owning" value="own"/>
                             <Tab label="Participating" value="part"/>
                             <Tab label="Pending a reply" value="pending"/>
@@ -147,7 +169,7 @@ const UserEventsPage = () => {
                     </Box>
 
                     <Paper style={{maxHeight: 460, overflow: 'auto'}}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={1}>
                             <TabPanel value="own">
                                 {ownedEvents.length === 0 ?
                                     <Typography variant="h6" gutterBottom>
@@ -155,7 +177,7 @@ const UserEventsPage = () => {
                                     </Typography> :
                                     <List style={{maxHeight: "100", overflow: "auto"}}>
                                         {ownedEvents.map((event) => {
-                                            return <EventsListItem event={event}/>
+                                            return <EventsListItem event={event} handleStatusChange={handleStatusChange}/>
                                         })}
                                     </List>
                                 }
@@ -168,7 +190,7 @@ const UserEventsPage = () => {
                                     </Typography> :
                                     <List style={{maxHeight: "100", overflow: "auto"}}>
                                         {participatedEvents.map((event) => {
-                                            return <EventsListItem event={event}/>
+                                            return <EventsListItem event={event} handleStatusChange={handleStatusChange}/>
                                         })}
                                     </List>
                                 }
@@ -180,8 +202,12 @@ const UserEventsPage = () => {
                                         You replied to all invitations by now!
                                     </Typography> :
                                     <List style={{maxHeight: "100", overflow: "auto"}}>
-                                        {participatedEvents.map((event) => {
-                                            return <EventsListItem event={event}/>
+                                        {pendingEvents.map((event) => {
+                                            return <EventsListItem
+                                                event={event}
+                                                handleStatusChange={handleStatusChange}
+                                                isPendingFlag={true}
+                                            />
                                         })}
                                     </List>
                                 }
