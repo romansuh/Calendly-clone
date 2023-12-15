@@ -67,7 +67,7 @@ const UserEventsPage = () => {
 
     useEffect(() => {
         dispatch(fetchEvents(currentUser.id));
-    }, [currentUser.id]);
+    }, [dispatch, currentUser.id]);
 
     useEffect(() => {
         if (users.length === 1)
